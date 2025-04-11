@@ -12,7 +12,14 @@ A simple web-based emoji guessing game where players are shown emojis and need t
 
 ## Features
 
-- 20 different emojis to guess
+- Over 150 different emojis to guess, organized in categories:
+  - Faces and expressions
+  - People and body
+  - Animals
+  - Food and drink
+  - Travel and places
+  - Activities
+  - Objects and symbols
 - Score tracking
 - Game statistics (correct and incorrect guesses)
 - Responsive design
