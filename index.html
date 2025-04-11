@@ -1,25 +1,136 @@
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web Page</title>
+    <title>Emoji Guessing Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Welcome to My Web Page</h1>
+        <h1>Emoji Guessing Game</h1>
+        <p>Guess the name of the emoji displayed below!</p>
     </header>
     <main>
-        <section>
-            <h2>About Me</h2>
-            <p>This is a paragraph about me.</p>
+        <section id="game-container">
+            <div id="emoji-display">😀</div>
+            <div id="guess-container">
+                <input type="text" id="guess-input" placeholder="Enter your guess here">
+                <button id="submit-guess">Submit</button>
+            </div>
+            <div id="feedback">Ready to play!</div>
+            <div id="score">Score: 0</div>
+            <button id="next-emoji">Next Emoji</button>
         </section>
-        <section>
-            <h2>My Projects</h2>
-            <p>This is a paragraph about my projects.</p>
+        <section id="stats">
+            <h2>Game Stats</h2>
+            <p>Correct: <span id="correct-count">0</span></p>
+            <p>Incorrect: <span id="incorrect-count">0</span></p>
         </section>
     </main>
     <footer>
-        <p>&copy; 2023 My Web Page</p>
+        <p>&copy; 2023 Emoji Guessing Game</p>
     </footer>
+
+    <script>
+        // Emoji data with emojis and their corresponding names
+        const emojiData = [
+            { emoji: "😀", name: "grinning face" },
+            { emoji: "😂", name: "face with tears of joy" },
+            { emoji: "🥰", name: "smiling face with hearts" },
+            { emoji: "😎", name: "smiling face with sunglasses" },
+            { emoji: "🥳", name: "partying face" },
+            { emoji: "😴", name: "sleeping face" },
+            { emoji: "🤔", name: "thinking face" },
+            { emoji: "🫡", name: "saluting face" },
+            { emoji: "🥺", name: "pleading face" },
+            { emoji: "😡", name: "pouting face" },
+            { emoji: "🤯", name: "exploding head" },
+            { emoji: "👍", name: "thumbs up" },
+            { emoji: "🙏", name: "folded hands" },
+            { emoji: "🎉", name: "party popper" },
+            { emoji: "🔥", name: "fire" },
+            { emoji: "💯", name: "hundred points" },
+            { emoji: "❤️", name: "red heart" },
+            { emoji: "🍕", name: "pizza" },
+            { emoji: "🌮", name: "taco" },
+            { emoji: "🍦", name: "ice cream" }
+        ];
+
+        // Game variables
+        let currentEmoji;
+        let score = 0;
+        let correctCount = 0;
+        let incorrectCount = 0;
+
+        // DOM elements
+        const emojiDisplay = document.getElementById('emoji-display');
+        const guessInput = document.getElementById('guess-input');
+        const submitButton = document.getElementById('submit-guess');
+        const feedbackElement = document.getElementById('feedback');
+        const scoreElement = document.getElementById('score');
+        const nextButton = document.getElementById('next-emoji');
+        const correctCountElement = document.getElementById('correct-count');
+        const incorrectCountElement = document.getElementById('incorrect-count');
+
+        // Function to select a random emoji
+        function selectRandomEmoji() {
+            const randomIndex = Math.floor(Math.random() * emojiData.length);
+            currentEmoji = emojiData[randomIndex];
+            emojiDisplay.textContent = currentEmoji.emoji;
+            feedbackElement.textContent = "What's this emoji called?";
+            guessInput.value = '';
+            guessInput.focus();
+        }
+
+        // Function to check the user's guess
+        function checkGuess() {
+            const userGuess = guessInput.value.trim().toLowerCase();
+            
+            if (userGuess === '') {
+                feedbackElement.textContent = "Please enter a guess!";
+                return;
+            }
+            
+            if (userGuess === currentEmoji.name) {
+                feedbackElement.textContent = "Correct! Well done!";
+                score += 10;
+                correctCount++;
+                correctCountElement.textContent = correctCount;
+            } else {
+                feedbackElement.textContent = `Sorry, the correct answer is "${currentEmoji.name}".`;
+                incorrectCount++;
+                incorrectCountElement.textContent = incorrectCount;
+            }
+            
+            scoreElement.textContent = `Score: ${score}`;
+            nextButton.disabled = false;
+            submitButton.disabled = true;
+            guessInput.disabled = true;
+        }
+
+        // Function to move to the next emoji
+        function nextEmoji() {
+            selectRandomEmoji();
+            nextButton.disabled = true;
+            submitButton.disabled = false;
+            guessInput.disabled = false;
+        }
+
+        // Event listeners
+        submitButton.addEventListener('click', checkGuess);
+        nextButton.addEventListener('click', nextEmoji);
+        guessInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        // Initialize the game
+        window.onload = function() {
+            nextButton.disabled = true;
+            selectRandomEmoji();
+        };
+    </script>
+</body>
 </html>
